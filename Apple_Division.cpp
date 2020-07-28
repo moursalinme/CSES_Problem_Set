@@ -3,17 +3,13 @@
 using namespace std;
 typedef long long ll;
  
-vector<int> ara, col;
+vector<int> ara;
 int n;
 ll nax = -(1e18), dif, mn = -100, mx = 1e18;
  
-void check(int i) {
+void check(int i, ll now) {
     if(i == n) {
-        if(col.empty()) return;
-        ll now  = 0;
-        for (auto i: col) {
-            now += i;
-        }
+        if(now == 0) return;
         if(now > (dif >> 1)) return;
         if(((dif-now) - now) < mx-mn) {
             mn = now;
@@ -21,10 +17,9 @@ void check(int i) {
         }
         return;
     }
-    check(i+1);
-    col.push_back(ara[i]);
-    check(i+1);
-    col.pop_back();
+    check(i+1, now);
+    check(i+1, now+ara[i]);
+    now -= ara[i];
 } 
  
 int main() 
@@ -40,7 +35,7 @@ int main()
         cout<< ara[0]<<endl;
         return 0;
     }
-    check(0);
+    check(0, 0);
     cout << mx-mn << endl;
  
     return 0;
